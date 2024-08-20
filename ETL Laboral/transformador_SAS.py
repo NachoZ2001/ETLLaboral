@@ -43,18 +43,23 @@ for index, row in holistor_df.iterrows():
     gremio = row.get('cdgre')
 
     # Sueldo de 10 posiciones sin coma
-    sueldo = round(float(row.get('remcondes')), 2)
-    sueldo_sin_coma = str(sueldo).replace(".","")
-    sueldo_final = sueldo_sin_coma.zfill(10)
+    sueldo = float(row.get('remcondes'))
+    sueldo_centavos = int(sueldo * 100)  # Convertir a centavos
+    sueldo_final = str(sueldo_centavos).zfill(10)  # Completar con ceros hasta 10 posiciones
 
     # Verificar que el SUELDO tenga exactamente 10 posiciones
     if len(sueldo_final) != 10:
         raise ValueError(f"El SUELDO '{sueldo_final}' no tiene 10 dígitos. Por favor, verifica el valor.")
 
-    importe_acuerdo = round(float(row.get('remsindes')), 2)
-    importe_acuerdo_sin_coma = str(importe_acuerdo).replace(".","")
-    importe_acuerdo_final = importe_acuerdo_sin_coma.zfill(10)
+    # Importe acuerdo de 10 posiciones sin coma
+    importe_acuerdo = float(row.get('remsindes'))
+    importe_acuerdo_centavos = int(importe_acuerdo * 100)  # Convertir a centavos
+    importe_acuerdo_final = str(importe_acuerdo_centavos).zfill(10)  # Completar con ceros hasta 10 posiciones
 
+    # Verificar que el IMPORTE ACUERDO tenga exactamente 10 posiciones
+    if len(importe_acuerdo_final) != 10:
+        raise ValueError(f"El IMPORTE ACUERDO'{importe_acuerdo_final}' no tiene 10 dígitos. Por favor, verifica el valor.")
+    
     # Sueldo de jornada parcial de 10 posiciones sin coma
     sueldo_jornada_parcial = 0
     sueldo_jornada_parcial_final = str(sueldo_jornada_parcial).zfill(10)
