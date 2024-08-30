@@ -133,8 +133,33 @@ def convertir_formato(fecha):
     if not fecha or fecha.strip() == '-   -':
         return ' '
     try:
-        fecha_datetime = datetime.strptime(fecha, '%d-%b-%y')
-        return fecha_datetime.strftime('%d/%m/%Y')
+        # Dividir la fecha por guion
+        fecha_dividida = fecha.split('-')
+        dia = int(fecha_dividida[0])
+        mes_texto = fecha_dividida[1]
+        año = int(fecha_dividida[2])
+
+        # Mapeo de los meses a sus números correspondientes
+        meses = {
+            'Jan': '01', 'Feb': '02', 'Mar': '03', 'Apr': '04',
+            'May': '05', 'Jun': '06', 'Jul': '07', 'Aug': '08',
+            'Sep': '09', 'Oct': '10', 'Nov': '11', 'Dec': '12'
+        }
+        
+        # Convertir el mes de texto a número
+        mes = meses[mes_texto]
+
+        date = datetime.now()
+        year = str(date.year)
+        year = year[-2:]
+
+        if año < int(year):
+            año += 2000
+        else:
+            año += 1900
+
+        # Retornar la fecha en el formato "día/mes/año"
+        return f"{dia:02d}/{mes}/{año}"
     except ValueError:
         return ' '
 
@@ -281,6 +306,15 @@ for index, row in holistor_df.iterrows():
         'Código de situación de revista': codigo_situacion_revista,
         'Horas por día': '',
         'Días adicionales': '',
+        'Administra vigencia de adicionales para vacaciones':'No',
+        'Años de vigencia con beneficio de adicionales para vacaciones':'',
+        'Lunes': 'Si',
+        'Martes': 'Si',
+        'Miércoles': 'Si',
+        'Jueves': 'Si',
+        'Viernes': 'Si',
+        'Sábado':'No',
+        'Domingo':'No',
         'Salud': 'Normal',
         'Incapacidad': '',
         'Código de obra social': '',
@@ -304,12 +338,13 @@ for index, row in holistor_df.iterrows():
         'Código de modelo de asientos de sueldos': '',
         'Liquida impuesto a las ganancias': 'Si',
         'Beneficiario Ley 27.549': 'No',
+        'Es personal de pozo':'No',
         'Fecha desde régimen teletrabajo': '',
         'Fecha hasta régimen teletrabajo': '',
         'Código de departamento': '',
         'Número de legajo del jefe': '',
-        'Es legajo principal':'Si',
         'Afecta archivo ASCII': 'Si',
+        'Es legajo principal':'Si',
         'Día de situación de revista 1': '1',
         'Código de situación de revista 1': codigo_situacion_revista_1,
         'Día de situación de revista 2': '',
@@ -321,7 +356,8 @@ for index, row in holistor_df.iterrows():
         'Código de actividad': codigo_actividad,
         'Código de modalidad de contratación': codigo_contratacion,
         'Código de lugar de trabajo': '',
-        'Código de jurisdicción': '75',
+        'Código de jurisdicción': '13',
+        'Observaciones para libro de sueldos digital': '',
         'Corresponde reducción': 'No',
         'Código de siniestrado': '00',
         'Capital de LRT': '0,00',
@@ -331,7 +367,6 @@ for index, row in holistor_df.iterrows():
         'Aporte adicional': '',
         'Aporte voluntario': '',
         'Excedente de seguridad social': '0,00',
-        'Número de concepto de ajuste de seguridad social': '',
         'Número de concepto para importe adicional de obra social': '',
         'Número de concepto para aporte adicional de obra social': '',
         'Número de concepto de ajuste de seguridad social':'',
@@ -341,14 +376,16 @@ for index, row in holistor_df.iterrows():
         'Importe de seguridad social': '0,00',
         'Aplica tope mínimo de seguridad social': 'Si',
         'Aplica tope máximo de seguridad social': 'Si',
-        'Método de cálculo de obra social': 'Por liquidacion',
+        'Método de cálculo de obra social': 'Por liquidación',
         'Importe de obra social': '0,00',
         'Aplica tope mínimo de obra social': 'Si',
         'Aplica tope máximo de obra social': 'Si',
         'Rectificación de remuneración': '0,00',
         'Contribución tarea diferencial': '0,00',
-        'Número de concepto para incremento salarial Dtos 14/2020 y 56/2020': '',
-        'Observaciones': ''
+        'Observaciones': '',
+        'Número de concepto para jornada completa de sueldo': '',
+        'Número de concepto para jornada completa de SAC': '',
+        'Número de concepto para jornada completa de vacaciones': '',
     }
     nuevos_registros.append(nuevo_registro)
 
